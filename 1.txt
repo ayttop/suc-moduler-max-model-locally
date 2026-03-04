@@ -1,0 +1,47 @@
+win11
+wsl2
+ubuntu 24
+i7 14
+ram 64
+rtx 4060ti 16
+
+
+mkdir gemma_working
+
+cd gemma_working
+
+pixi init
+
+pixi add "max==26.1.0.dev2026010605" "max-pipelines==26.1.0.dev2026010605" "modular==26.1.0.dev2026010605" python=3.12
+
+
+sudo apt update
+sudo apt install podman
+
+
+
+
+
+podman --version
+
+pixi shell
+
+
+podman run --rm -it \
+  --device nvidia.com/gpu=0 \
+  --shm-size 2g \
+  -e HF_TOKEN="xxxxxxxxxxxxx" \
+  docker.io/modular/max-nvidia-base:26.1.0 \
+  max generate --model-path google/gemma-3-4b-it --prompt "hi"
+
+
+pixi run max generate --model-path HuggingFaceTB/SmolLM-135M --prompt "hi"
+
+
+
+pixi run max generate --model "modularai/Llama-3.1-8B-Instruct-GGUF" --quantization-encoding=q4_k --prompt "hi"
+
+
+
+max serve --model meta-llama/Llama-3.2-1B-Instruct \
+  --weight-path=bartowski/Llama-3.2-1B-Instruct-GGUF/Llama-3.2-1B-Instruct-Q6_K.gguf
